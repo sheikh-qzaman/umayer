@@ -51,7 +51,6 @@ public class UrlShortenerController {
 		// generating murmur3 based hash key as short URL. [3]
 		String slug = Hashing.murmur3_32().hashString(url.getUrl(), Charset.defaultCharset()).toString();
 		url.setSlug(slug);
-		;
 		url.setCreatedAt(LocalDateTime.now());
 
 		// store in redis [4]
