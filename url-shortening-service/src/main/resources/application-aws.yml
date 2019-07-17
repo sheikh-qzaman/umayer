@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: url-shortening-service
+  redis:
+    host: 172.31.25.41
+    port: 6379
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.31.29.137:8080/eureka
