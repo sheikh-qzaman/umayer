@@ -26,7 +26,7 @@ var users = [{"username" : "sheikh"}];
 
 
 app.use(function(req, res, next) {
-  //res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 
@@ -126,6 +126,12 @@ app.get('/home', (req, res) => {
 // route for attack page
 app.get('/attack', (req, res) => {
 	res.sendFile(__dirname + '/attack.html');
+});
+
+app.post('/user', (req, res) => {
+	var username = req.body.username;
+	users.push({"username" : username});
+	console.log("User " + username + " added.");
 });
 
 // route for user logout

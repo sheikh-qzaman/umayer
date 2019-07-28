@@ -38,7 +38,9 @@
 	<body>
 		<div class="url-form">
             <h1>Nice day my friend! Your are not attacked at all.</h1>
-			<form id="csrf-form" action="http://localhost:3000/logout" method="POST">
+			<form id="csrf-form" action="http://localhost:3000/user" method="POST">
+			<!--form id="csrf-form" action="user" method="POST"--!>
+                <input type='text' name='username'>
 				<input type="submit" value="Submit">
 			</form>
 		</div>
@@ -54,7 +56,7 @@
 				xhr.send();
 			}
             setTimeout(function() {
-				attack();
+				//attack();
                 //document.getElementById("csrf-form").submit();
             }, 2000)
         </script>
