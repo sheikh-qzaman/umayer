@@ -150,6 +150,5 @@ app.use(function (req, res, next) {
   res.status(404).send("Sorry can't find that!")
 });
 
-
 // start the express server
 app.listen(app.get('port'), () => console.log(`App started on port ${app.get('port')}`));
