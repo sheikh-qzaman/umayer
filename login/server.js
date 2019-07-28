@@ -21,6 +21,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // initialize cookie-parser to allow us access the cookies stored in the browser. 
 app.use(cookieParser());
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 var sessionSecret = crypto.randomBytes(48).toString('hex');
 
 // initialize express-session to allow us track the logged-in user across sessions.
@@ -106,6 +112,10 @@ app.get('/home', (req, res) => {
     }
 });
 
+// route for attack page
+app.get('/attack', (req, res) => {
+	res.sendFile(__dirname + '/attack.html');
+});
 
 // route for user logout
 app.get('/logout', (req, res) => {
