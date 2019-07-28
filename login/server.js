@@ -5,7 +5,6 @@ var session = require('express-session');
 var morgan = require('morgan');
 var crypto = require('crypto');
 var csrf = require('csurf')
-//var User = require('./models/user');
 
 // setup route middlewares
 //var csrfProtection = csrf({ cookie: true });
@@ -149,6 +148,10 @@ app.get('/logout', (req, res) => {
     }
 });
 
+// route for attack page
+app.get('/attack', (req, res) => {
+	res.sendFile(__dirname + '/attack.html');
+});
 
 // route for handling 404 requests(unavailable routes)
 app.use(function (req, res, next) {
