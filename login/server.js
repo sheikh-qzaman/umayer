@@ -21,9 +21,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // initialize cookie-parser to allow us access the cookies stored in the browser. 
 app.use(cookieParser());
 
+// initialize user
+var users = [{"username" : "sheikh"}];
+
+
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 
@@ -94,7 +97,15 @@ app.route('/login')
     .post((req, res) => {
         var username = req.body.username, password = req.body.password;
 
-		if (username != 'sheikh') {
+		var userExist = false;
+		for (var user in users) {
+			if(users[user].username == username) {
+				userExist = true;
+				console.log("User " + username + " exists");
+				break;
+			}
+		}
+		if (!userExist) {
 			res.redirect('/login');
 		} else {
 			req.session.user = username;
