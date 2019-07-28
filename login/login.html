@@ -35,12 +35,36 @@
 		}
 		</style>
 	</head>
-	<body>
-		<div class="login-form">
+	<body onload="putCSRF()">
+		<script>
+			function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0) == ' ') {
+					  c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+					  return c.substring(name.length, c.length);
+					}
+				}
+				return "";
+			}
+
+			function putCSRF() {
+				var CSRF = getCookie('XSRF-TOKEN');
+				console.log("CSRF: " + CSRF);
+				document.getElementById("csrf").setAttribute("value", CSRF);
+			}
+		</script>
+		<div class="login-form" >
 			<h1>Login Form</h1>
 			<form action="login" method="POST">
-				<input type="text" name="username" placeholder="Username" required>
-				<input type="password" name="password" placeholder="Password" required>
+				<input id="csrf" type="hidden" name="_csrf"/>
+				<input type="text" name="username" placeholder="Username" required/>
+				<input type="password" name="password" placeholder="Password" required/>
 				<input type="submit">
 			</form>
 		</div>

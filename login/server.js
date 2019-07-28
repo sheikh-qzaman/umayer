@@ -4,7 +4,11 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
 var crypto = require('crypto');
+var csrf = require('csurf')
 //var User = require('./models/user');
+
+// setup route middlewares
+//var csrfProtection = csrf({ cookie: true });
 
 // invoke an instance of express application.
 var app = express();
@@ -21,9 +25,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // initialize cookie-parser to allow us access the cookies stored in the browser. 
 app.use(cookieParser());
 
+// use csufr
+app.use(csrf({
+		cookie: true, // Determines if the token secret for the user should be stored in a cookie or in req.session. Defaults to false.
+		httpOnly: false // flags the cookie to be accessible only by the web server (defaults to false)
+	}
+));
+
 // initialize user
 var users = [{"username" : "sheikh"}];
-
 
 app.use(function(req, res, next) {
   //res.header("Access-Control-Allow-Origin", "*");
@@ -39,7 +49,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: 600000
+        expires: 600000,
+		httpOnly: true // if true, cookies can't be accessed from non HTML (i.e. JavaScript)
     }
 }));
 
@@ -61,12 +72,10 @@ var sessionChecker = (req, res, next) => {
     }    
 };
 
-
 // route for Home-Page
 app.get('/', sessionChecker, (req, res) => {
     res.redirect('/login');
 });
-
 
 // route for user signup
 app.route('/signup')
@@ -123,16 +132,12 @@ app.get('/home', (req, res) => {
     }
 });
 
-// route for attack page
-app.get('/attack', (req, res) => {
-	res.sendFile(__dirname + '/attack.html');
-});
-
 app.post('/user', (req, res) => {
 	var username = req.body.username;
 	users.push({"username" : username});
 	console.log("User " + username + " added.");
 });
+
 
 // route for user logout
 app.get('/logout', (req, res) => {
