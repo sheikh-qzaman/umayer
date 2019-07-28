@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
+var crypto = require('crypto');
 //var User = require('./models/user');
 
 // invoke an instance of express application.
@@ -20,17 +21,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // initialize cookie-parser to allow us access the cookies stored in the browser. 
 app.use(cookieParser());
 
+var sessionSecret = crypto.randomBytes(48).toString('hex');
+
 // initialize express-session to allow us track the logged-in user across sessions.
 app.use(session({
     key: 'user_sid',
-    secret: 'somerandonstuffs',
+    secret: sessionSecret, // This is the secret used to sign the session ID cookie.
     resave: false,
     saveUninitialized: false,
     cookie: {
         expires: 600000
     }
 }));
-
 
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
@@ -40,7 +42,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-
 
 // middleware function to check for logged-in users
 var sessionChecker = (req, res, next) => {
